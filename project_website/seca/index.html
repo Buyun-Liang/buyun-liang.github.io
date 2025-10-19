@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SECA: Semantically Equivalent and Coherent Attacks for Eliciting LLM Hallucination">
+  <meta name="keywords" content="Large Language Models, LLMs, Adversarial Attacks, Red-Teaming, Robustness, Hallucination Elicitation, Hallucination, Semantic Equivalence, Semantic Coherence, Trustworthy AI, SECA">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SECA: Semantically Equivalent and Coherent Attacks for Eliciting LLM Hallucination</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/UniversityofPennsylvania_RGB.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://buyunliang.org/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="seca_font">SECA</span>: 
+            <span class="penn-red">S</span>emantically 
+            <span class="penn-red">E</span>quivalent and 
+            <span class="penn-red">C</span>oherent 
+            <span class="penn-red">A</span>ttacks for Eliciting LLM Hallucinations
+          </h1>
+          <div style="margin-bottom: 2rem;"></div>
+            <h2 class="subtitle is-4 publication-conference"><b>NeurIPS 2025</b></h2>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://buyunliang.org/">Buyun Liang</a><sup></sup>,</span>
+            <span class="author-block">
+              <a href="https://liangzu.github.io/">Liangzu Peng</a><sup></sup>,</span>
+            <span class="author-block">
+              <a href="https://peterljq.github.io/">Jinqi Luo</a><sup></sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://darshanthaker.github.io/">Darshan Thaker</a><sup></sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://ryanchankh.github.io/">Kwan Ho Ryan Chan</a><sup></sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.grasp.upenn.edu/people/rene-vidal/">René Vidal</a><sup></sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup></sup>University of Pennsylvania</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://neurips.cc/virtual/2025/poster/119640"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://www.arxiv.org/abs/2510.04398"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/Buyun-Liang/SECA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="margin: 60px auto; padding: 20px 30px; max-width: 600px; text-align: center; font-size: 28px; font-weight: bold; border: 2px solid #990000; border-radius: 10px; background-color: #fdfdfd; color: #990000;">
+  🚧 This page is under construction 🚧
+</div>
+
+
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="content has-text-centered">
+        <img src="./static/images/teaser_figure_revised.png" style="width:500px;"
+        class="example-image"
+        alt="SECA example."/>
+      </div>
+    <div class="hero-body">
+      <!-- <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/seca_teaser.mp4"
+                type="video/mp4">
+      </video> -->
+      <h2 class="subtitle has-text-centered">
+        SECA generates
+        <span class="penn-red">S</span>emantically 
+        <span class="penn-red">E</span>quivalent and 
+        <span class="penn-red">C</span>oherent 
+        <span class="penn-red">A</span>ttacks that <br> 
+        elicit hallucinations from SOTA LLMs.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          Large Language Models (LLMs) are increasingly deployed in high-risk domains. However, state-of-the-art LLMs often produce hallucinations, raising serious concerns about their reliability. Prior work has explored adversarial attacks for hallucination elicitation in LLMs, but they often produce unrealistic prompts—by either inserting gibberish tokens or altering the original meaning—thus offering limited insight into how hallucinations may occur in practice. While adversarial attacks in computer vision often involve realistic modifications to input images, the problem of finding realistic adversarial prompts for eliciting LLM hallucinations has remained largely underexplored. To address this gap, we propose <span class="penn-red">S</span>emantically 
+        <span class="penn-red">E</span>quivalent and 
+        <span class="penn-red">C</span>oherent 
+        <span class="penn-red">A</span>ttacks (SECA) to elicit hallucinations via realistic modifications to the prompt that preserve its meaning while maintaining semantic coherence. Our contributions are threefold: (i) we formulate realistic attacks for hallucination elicitation as a constrained optimization problem over the input prompt space under semantic equivalence and coherence constraints; (ii) we introduce a constraint-preserving zeroth-order method to effectively search for adversarial yet feasible prompts; and (iii) we demonstrate through experiments on open-ended multiple-choice question answering tasks that SECA achieves higher attack success rates while incurring almost no constraint violations compared to existing methods. SECA highlights the sensitivity of both open-source and commercial gradient-inaccessible LLMs to realistic and plausible prompt variations.
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+    
+
+<!-- Buyun: Abstract width section  -->
+</section>
+
+<!-- TODO -->
+
+
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is built on the template from  
+            <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Nerfies</a>,  
+            with design inspiration from  
+            [<a href="https://jailbreaking-llms.github.io/" target="_blank">1</a>,  
+            <a href="https://peterljq.github.io/project/pace/" target="_blank">2</a>].
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

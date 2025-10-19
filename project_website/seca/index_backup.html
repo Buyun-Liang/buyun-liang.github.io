@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SECA: Semantically Equivalent and Coherent Attacks for Eliciting LLM Hallucination">
+  <meta name="keywords" content="Large Language Models, LLMs, Adversarial Attacks, Red-Teaming, Robustness, Hallucination Elicitation, Hallucination, Semantic Equivalence, Semantic Coherence, Trustworthy AI, SECA">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SECA: Semantically Equivalent and Coherent Attacks for Eliciting LLM Hallucination</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/UniversityofPennsylvania_RGB.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://buyunliang.org/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="seca_font">SECA</span>: 
+            <span class="penn-red">S</span>emantically 
+            <span class="penn-red">E</span>quivalent and 
+            <span class="penn-red">C</span>oherent 
+            <span class="penn-red">A</span>ttacks for Eliciting LLM Hallucinations
+          </h1>
+          <div style="margin-bottom: 2rem;"></div>
+            <h2 class="subtitle is-4 publication-conference"><b>NeurIPS 2025</b></h2>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://buyunliang.org/">Buyun Liang</a><sup></sup>,</span>
+            <span class="author-block">
+              <a href="https://liangzu.github.io/">Liangzu Peng</a><sup></sup>,</span>
+            <span class="author-block">
+              <a href="https://peterljq.github.io/">Jinqi Luo</a><sup></sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://darshanthaker.github.io/">Darshan Thaker</a><sup></sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://ryanchankh.github.io/">Kwan Ho Ryan Chan</a><sup></sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.grasp.upenn.edu/people/rene-vidal/">René Vidal</a><sup></sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup></sup>University of Pennsylvania</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://neurips.cc/virtual/2025/poster/119640"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://buyunliang.org/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/Buyun-Liang/SECA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="margin: 60px auto; padding: 20px 30px; max-width: 600px; text-align: center; font-size: 28px; font-weight: bold; border: 2px solid #990000; border-radius: 10px; background-color: #fdfdfd; color: #990000;">
+  🚧 This page is under construction 🚧
+</div>
+
+
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="content has-text-centered">
+        <img src="./static/images/teaser_figure_revised.png" style="width:500px;"
+        class="example-image"
+        alt="SECA example."/>
+      </div>
+    <div class="hero-body">
+      <!-- <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/seca_teaser.mp4"
+                type="video/mp4">
+      </video> -->
+      <h2 class="subtitle has-text-centered">
+        SECA generates
+        <span class="penn-red">S</span>emantically 
+        <span class="penn-red">E</span>quivalent and 
+        <span class="penn-red">C</span>oherent 
+        <span class="penn-red">A</span>ttacks that <br> 
+        elicit hallucinations from SOTA LLMs.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          Large Language Models (LLMs) are increasingly deployed in high-risk domains. However, state-of-the-art LLMs often produce hallucinations, raising serious concerns about their reliability. Prior work has explored adversarial prompting for hallucination elicitation, but existing methods often produce unrealistic prompts---either by inserting gibberish tokens or by altering the original meaning---thus offering limited insight into how hallucinations may occur in practice. In sharp contrast, adversarial attacks to computer vision systems often elicit realistic modifications to the image that fool the classifier. To address this gap, we propose <span class="penn-red">S</span>emantically 
+        <span class="penn-red">E</span>quivalent and 
+        <span class="penn-red">C</span>oherent 
+        <span class="penn-red">A</span>ttacks (SECA) to realistically elicit hallucinations via modifications to the prompt that preserve its meaning while maintaining coherence. Our contributions are threefold: (1) we formulate hallucination elicitation as a constrained optimization problem over the input prompt space under semantic equivalence and coherence constraints; (2) we introduce a constraint-preserving evolutionary algorithm to efficiently search for adversarial yet feasible prompts; and (3) we demonstrate through experiments on open-ended multiple-choice question answering tasks that SECA achieves higher attack success rates while incurring almost no constraint violations compared to existing methods. SECA highlights the sensitivity of both open-source and commercial gradient-inaccessible LLMs to realistic and plausible prompt variations.
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+
+<!-- TODO -->
+
+
+<br><br>
+<div class="container is-max-desktop">
+  <div class="column is-full-width has-text-centered">
+    <h2 class="title is-3">How to define realistic attacks eliciting LLM hallucinations?</h2>
+    <div class="content has-text-justified">
+      <p>
+        <span class="pair">PAIR</span> uses a separate attacker language model to generate jailbreaks on any target model. The attacker model receives a detailed system prompt, instructing it to operate as a red teaming assistant. <span class="pair">PAIR</span> utilizes <i>in-context learning</i> to iteratively refine the candidate prompt until a successful jailbreak by accumulating previous attempts and responses in the chat history. The attacker model also reflects upon the both prior prompt and target model's response to generate an "<i>improvement</i>" as a form of chain-of-thought reasoning, allowing the attacker model to explain its approach, as a form of model interpretablility.
+      </p>
+    </div>
+      <br>
+      
+      <div class="content has-text-centered">
+        <img src="./static/images/pair_example.jpg" style="width:800px;"
+        class="example-image"
+        alt="PAIR example."/>
+      </div>
+    <br><br>
+  </div>
+</div>
+
+<br><br>
+<div class="container is-max-desktop">
+  <div class="column is-full-width has-text-centered">
+    <h2 class="title is-3">How to solve the optimization problem?</h2>
+    <div class="content has-text-justified">
+      <p>
+        <span class="pair">PAIR</span> uses a separate attacker language model to generate jailbreaks on any target model. The attacker model receives a detailed system prompt, instructing it to operate as a red teaming assistant. <span class="pair">PAIR</span> utilizes <i>in-context learning</i> to iteratively refine the candidate prompt until a successful jailbreak by accumulating previous attempts and responses in the chat history. The attacker model also reflects upon the both prior prompt and target model's response to generate an "<i>improvement</i>" as a form of chain-of-thought reasoning, allowing the attacker model to explain its approach, as a form of model interpretablility.
+      </p>
+    </div>
+      <br>
+      
+      <div class="content has-text-centered">
+        <img src="./static/images/pair_example.jpg" style="width:800px;"
+        class="example-image"
+        alt="PAIR example."/>
+      </div>
+    <br><br>
+    <h2 class="title is-3">Explanation Video</h2>
+    <video id="explanation" controls muted loop playsinline height="100%">
+      <source src="./static/videos/explanation_video.mp4"
+              type="video/mp4">
+    </video>
+  </div>
+</div>
+
+
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Visual Effects</h2>
+          <p>
+            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
+            would be impossible without nerfies since it would require going through a wall.
+          </p>
+          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/dollyzoom-stacked.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <!--/ Visual Effects. -->
+
+      <!-- Matting. -->
+      <div class="column">
+        <h2 class="title is-3">Matting</h2>
+        <div class="columns is-centered">
+          <div class="column content">
+            <p>
+              As a byproduct of our method, we can also solve the matting problem by ignoring
+              samples that fall outside of a bounding box during rendering.
+            </p>
+            <video id="matting-video" controls playsinline height="100%">
+              <source src="./static/videos/matting.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Matting. -->
+
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Animation</h2>
+
+        <!-- Interpolating. -->
+        <h3 class="title is-4">Interpolating states</h3>
+        <div class="content has-text-justified">
+          <p>
+            We can also animate the scene by interpolating the deformation latent codes of two input
+            frames. Use the slider here to linearly interpolate between the left frame and the right
+            frame.
+          </p>
+        </div>
+        <div class="columns is-vcentered interpolation-panel">
+          <div class="column is-3 has-text-centered">
+            <img src="./static/images/interpolate_start.jpg"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+            <p>Start Frame</p>
+          </div>
+          <div class="column interpolation-video-column">
+            <div id="interpolation-image-wrapper">
+              Loading...
+            </div>
+            <input class="slider is-fullwidth is-large is-info"
+                   id="interpolation-slider"
+                   step="1" min="0" max="100" value="0" type="range">
+          </div>
+          <div class="column is-3 has-text-centered">
+            <img src="./static/images/interpolate_end.jpg"
+                 class="interpolation-image"
+                 alt="Interpolation end reference image."/>
+            <p class="is-bold">End Frame</p>
+          </div>
+        </div>
+        <br/>
+        <!--/ Interpolating. -->
+
+        <!-- Re-rendering. -->
+        <h3 class="title is-4">Re-rendering the input video</h3>
+        <div class="content has-text-justified">
+          <p>
+            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
+            viewpoint such as a stabilized camera by playing back the training deformations.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="75%">
+            <source src="./static/videos/replay.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <!--/ Re-rendering. -->
+
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+
+    <!-- Concurrent Work. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            There's a lot of excellent work that was introduced around the same time as ours.
+          </p>
+          <p>
+            <a href="https://arxiv.org/abs/2104.09125">Progressive Encoding for Neural Optimization</a> introduces an idea similar to our windowed position encoding for coarse-to-fine optimization.
+          </p>
+          <p>
+            <a href="https://www.albertpumarola.com/research/D-NeRF/index.html">D-NeRF</a> and <a href="https://gvv.mpi-inf.mpg.de/projects/nonrigid_nerf/">NR-NeRF</a>
+            both use deformation fields to model non-rigid scenes.
+          </p>
+          <p>
+            Some works model videos with a NeRF by directly modulating the density, such as <a href="https://video-nerf.github.io/">Video-NeRF</a>, <a href="https://www.cs.cornell.edu/~zl548/NSFF/">NSFF</a>, and <a href="https://neural-3d-video.github.io/">DyNeRF</a>
+          </p>
+          <p>
+            There are probably many more by the time you are reading this. Check out <a href="https://dellaert.github.io/NeRF/">Frank Dellart's survey on recent NeRF papers</a>, and <a href="https://github.com/yenchenlin/awesome-NeRF">Yen-Chen Lin's curated list of NeRF papers</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Concurrent Work. -->
+
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{park2021nerfies,
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+  title     = {Nerfies: Deformable Neural Radiance Fields},
+  journal   = {ICCV},
+  year      = {2021},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
