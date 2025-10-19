@@ -140,3 +140,16 @@ span.highlight {
     display: inline-block;
     border-radius: 10px;
 }
+
+
+/* Buyun added */
+
+a, a:visited {
+  color: #005B9A;        /* Penn Data Science blue */
+  text-decoration: none; 
+}
+
+a:hover, a:focus {
+  color: #005B9A;        /* stay the same blue */
+  text-decoration: underline; 
+}
