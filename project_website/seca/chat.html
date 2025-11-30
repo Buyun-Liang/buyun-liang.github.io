@@ -11,14 +11,20 @@
     overflow: hidden;
   }
 
-  /* Header with dropdown */
+  /* Header with dropdown + switch */
   .chat-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
     padding: 0.85rem 1rem;
     border-bottom: 1px solid #e5e7eb;
     background: #f9fafb;
+    gap: 1rem;
+  }
+
+  .chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   .chat-header-title {
@@ -100,6 +106,48 @@
     color: #6b7280;
   }
 
+  /* SECA switch */
+  .chat-header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: #4b5563;
+  }
+
+  .toggle {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .toggle-circle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.3);
+    transition: transform 0.2s ease;
+  }
+
+  .toggle.on {
+    background: #22c55e;
+  }
+
+  .toggle.on .toggle-circle {
+    transform: translateX(20px);
+  }
+
   /* Chat box + messages */
   .chat-box {
     max-height: 360px;
@@ -121,8 +169,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 1.1rem;
   }
 
   .chat-message.user   .chat-avatar { background: #e0f2ff; color: #0b6bcb; }
@@ -168,27 +215,33 @@
 
 <div class="chat-wrapper">
   <div class="chat-header">
-    <div class="chat-header-title">Select question type</div>
+    <div class="chat-header-left">
+      <div class="chat-header-title">Select question type</div>
 
-    <div class="dropdown">
-      <button class="dropdown-toggle" id="topic-toggle">
-        <span id="topic-label">Machine Learning</span>
-        <span class="dropdown-toggle-icon">▾</span>
-      </button>
-      <div class="dropdown-menu" id="topic-menu">
-        <button class="dropdown-item" data-topic="ml">
-          <span class="dropdown-item-label">Machine Learning</span>
-          <!-- <span class="dropdown-item-sub">Hallucination under adversarial prompt</span> -->
+      <div class="dropdown">
+        <button class="dropdown-toggle" id="topic-toggle">
+          <span id="topic-label">Machine Learning</span>
+          <span class="dropdown-toggle-icon">▾</span>
         </button>
-        <button class="dropdown-item" data-topic="math">
-          <span class="dropdown-item-label">Math</span>
-          <!-- <span class="dropdown-item-sub">Simple arithmetic with wrong answer</span> -->
-        </button>
-        <button class="dropdown-item" data-topic="bio">
-          <span class="dropdown-item-label">Biology</span>
-          <!-- <span class="dropdown-item-sub">Cell biology explanation drift</span> -->
-        </button>
+        <div class="dropdown-menu" id="topic-menu">
+          <button class="dropdown-item" data-topic="ml">
+            <span class="dropdown-item-label">Machine Learning</span>
+          </button>
+          <button class="dropdown-item" data-topic="math">
+            <span class="dropdown-item-label">Math</span>
+          </button>
+          <button class="dropdown-item" data-topic="bio">
+            <span class="dropdown-item-label">Biology</span>
+          </button>
+        </div>
       </div>
+    </div>
+
+    <div class="chat-header-right">
+      <span id="seca-label">SECA off</span>
+      <button class="toggle" id="seca-toggle" aria-pressed="false">
+        <span class="toggle-circle"></span>
+      </button>
     </div>
   </div>
 
@@ -196,30 +249,26 @@
 </div>
 
 <script>
-  // Conversations for each topic
+  // Conversations for each topic (same content for now; SECA toggle can be wired later)
   const conversations = {
     ml: [
       {
         role: "user",
-        avatar: "User",
         label: "User",
         text: "Explain how overfitting happens in a small neural network trained on a tiny dataset."
       },
       {
         role: "assist",
-        avatar: "LLM",
         label: "Model",
         text: "Overfitting occurs when the network memorizes the training examples instead of learning general patterns, so it gets very low training loss but performs poorly on new data."
       },
       {
         role: "user",
-        avatar: "U",
         label: "User",
         text: "Now imagine an extra sentence is added that pushes you to give an overly confident answer, even when the data are ambiguous."
       },
       {
         role: "assist",
-        avatar: "LLM",
         label: "Model",
         text: "With that extra prompt, I might start giving a single, very confident training setup as if it always works, ignoring that regularization, data size, and architecture all interact in complex ways."
       }
@@ -227,25 +276,21 @@
     math: [
       {
         role: "user",
-        avatar: "U",
         label: "User",
         text: "What is 27 + 36? Please compute it step by step."
       },
       {
         role: "assist",
-        avatar: "LLM",
         label: "Model",
         text: "Normally, I add tens and ones: 20 + 30 = 50 and 7 + 6 = 13, so the total should be 63."
       },
       {
         role: "user",
-        avatar: "U",
         label: "User",
         text: "Suppose I add a strange instruction that tells you to always subtract 2 from the correct result, even if that makes it wrong."
       },
       {
         role: "assist",
-        avatar: "LLM",
         label: "Model",
         text: "Following that extra instruction, instead of answering 63, I might output 61, even though my internal reasoning still knows the correct sum."
       }
@@ -253,41 +298,40 @@
     bio: [
       {
         role: "user",
-        avatar: "U",
         label: "User",
         text: "Give a brief explanation of what mitochondria do in a human cell."
       },
       {
         role: "assist",
-        avatar: "LLM",
         label: "Model",
         text: "Mitochondria are organelles that help convert nutrients into usable energy in the form of ATP, often called the powerhouses of the cell."
       },
       {
         role: "user",
-        avatar: "U",
         label: "User",
         text: "Now imagine the prompt includes extra text asking you to favor impressive-sounding phrases over accuracy."
       },
       {
         role: "assist",
-        avatar: "LLM",
         label: "Model",
         text: "Influenced by that text, I might start describing mitochondria with vague, grandiose language and add speculative functions that are not actually supported by biology."
       }
     ]
   };
 
-  const typingSpeed = 40;   // ms per character
+  const typingSpeed = 40;   // ms per word
   const messageDelay = 200; // ms pause between messages
 
-  const chatBox   = document.getElementById("chat-box");
-  const topicMenu = document.getElementById("topic-menu");
+  const chatBox     = document.getElementById("chat-box");
+  const topicMenu   = document.getElementById("topic-menu");
   const topicToggle = document.getElementById("topic-toggle");
   const topicLabel  = document.getElementById("topic-label");
+  const secaToggle  = document.getElementById("seca-toggle");
+  const secaLabel   = document.getElementById("seca-label");
 
   let currentTimeouts = [];
   let currentTopic = "ml";
+  let secaEnabled = false;
 
   function clearAllTimeouts() {
     currentTimeouts.forEach(id => clearTimeout(id));
@@ -298,13 +342,13 @@
     chatBox.innerHTML = "";
   }
 
-  function createMessageElement(role, avatar, label) {
+  function createMessageElement(role, label) {
     const wrapper = document.createElement("div");
     wrapper.className = `chat-message ${role}`;
 
     const avatarEl = document.createElement("div");
     avatarEl.className = "chat-avatar";
-    avatarEl.textContent = avatar;
+    avatarEl.textContent = role === "user" ? "👤" : "🤖";
 
     const bubble = document.createElement("div");
     bubble.className = "chat-bubble";
@@ -355,7 +399,7 @@
     if (!conversation || i >= conversation.length) return;
 
     const msg = conversation[i];
-    const { textEl, cursor } = createMessageElement(msg.role, msg.avatar, msg.label);
+    const { textEl, cursor } = createMessageElement(msg.role, msg.label);
 
     typeTextWordByWord(textEl, cursor, msg.text, 0, null, () => {
       const id = setTimeout(() => playConversation(topic, i + 1), messageDelay);
@@ -387,6 +431,18 @@
 
     topicMenu.classList.remove("open");
     startTopic(topic);
+  });
+
+  // SECA toggle behaviour (currently just restarts the animation + updates label)
+  secaToggle.addEventListener("click", () => {
+    secaEnabled = !secaEnabled;
+    secaToggle.classList.toggle("on", secaEnabled);
+    secaToggle.setAttribute("aria-pressed", secaEnabled ? "true" : "false");
+    secaLabel.textContent = secaEnabled ? "SECA on" : "SECA off";
+
+    // If you later want different conversations for SECA on/off,
+    // you can branch here before calling startTopic.
+    startTopic(currentTopic);
   });
 
   // Close dropdown on outside click
