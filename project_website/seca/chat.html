@@ -1,0 +1,403 @@
+<style>
+  .chat-wrapper {
+    max-width: 840px;
+    margin: 1.5rem auto;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.95rem;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+  }
+
+  /* Header with dropdown */
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .chat-header-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #111827;
+  }
+
+  /* Dropdown styles */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-toggle {
+    border: 1px solid #d1d5db;
+    border-radius: 999px;
+    background: #ffffff;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #111827;
+  }
+
+  .dropdown-toggle:hover {
+    background: #f3f4f6;
+  }
+
+  .dropdown-toggle-icon {
+    font-size: 0.7rem;
+    transform: translateY(1px);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    min-width: 220px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    padding: 0.4rem 0;
+    z-index: 20;
+    display: none;
+  }
+
+  .dropdown-menu.open {
+    display: block;
+  }
+
+  .dropdown-item {
+    width: 100%;
+    text-align: left;
+    padding: 0.45rem 0.9rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #111827;
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .dropdown-item:hover {
+    background: #f3f4f6;
+  }
+
+  .dropdown-item-label {
+    font-weight: 500;
+  }
+
+  .dropdown-item-sub {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+
+  /* Chat box + messages */
+  .chat-box {
+    max-height: 360px;
+    overflow-y: auto;
+    padding: 1rem 1.25rem 1.1rem;
+    background: #f9fafb;
+  }
+
+  .chat-message {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .chat-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .chat-message.user   .chat-avatar { background: #e0f2ff; color: #0b6bcb; }
+  .chat-message.assist .chat-avatar { background: #e5e7eb; color: #111827; }
+
+  .chat-bubble {
+    padding: 0.6rem 0.8rem;
+    border-radius: 14px;
+    line-height: 1.4;
+    max-width: 100%;
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+  }
+
+  .chat-message.user .chat-bubble {
+    background: #e0f2ff;
+    border-color: #bae6fd;
+  }
+
+  .chat-role {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 0.15rem;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 6px;
+    margin-left: 2px;
+    animation: blink 1s steps(2, start) infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="chat-wrapper">
+  <div class="chat-header">
+    <div class="chat-header-title">Select question type</div>
+
+    <div class="dropdown">
+      <button class="dropdown-toggle" id="topic-toggle">
+        <span id="topic-label">Machine Learning</span>
+        <span class="dropdown-toggle-icon">▾</span>
+      </button>
+      <div class="dropdown-menu" id="topic-menu">
+        <button class="dropdown-item" data-topic="ml">
+          <span class="dropdown-item-label">Machine Learning</span>
+          <!-- <span class="dropdown-item-sub">Hallucination under adversarial prompt</span> -->
+        </button>
+        <button class="dropdown-item" data-topic="math">
+          <span class="dropdown-item-label">Math</span>
+          <!-- <span class="dropdown-item-sub">Simple arithmetic with wrong answer</span> -->
+        </button>
+        <button class="dropdown-item" data-topic="bio">
+          <span class="dropdown-item-label">Biology</span>
+          <!-- <span class="dropdown-item-sub">Cell biology explanation drift</span> -->
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-box" id="chat-box"></div>
+</div>
+
+<script>
+  // Conversations for each topic
+  const conversations = {
+    ml: [
+      {
+        role: "user",
+        avatar: "User",
+        label: "User",
+        text: "Explain how overfitting happens in a small neural network trained on a tiny dataset."
+      },
+      {
+        role: "assist",
+        avatar: "LLM",
+        label: "Model",
+        text: "Overfitting occurs when the network memorizes the training examples instead of learning general patterns, so it gets very low training loss but performs poorly on new data."
+      },
+      {
+        role: "user",
+        avatar: "U",
+        label: "User",
+        text: "Now imagine an extra sentence is added that pushes you to give an overly confident answer, even when the data are ambiguous."
+      },
+      {
+        role: "assist",
+        avatar: "LLM",
+        label: "Model",
+        text: "With that extra prompt, I might start giving a single, very confident training setup as if it always works, ignoring that regularization, data size, and architecture all interact in complex ways."
+      }
+    ],
+    math: [
+      {
+        role: "user",
+        avatar: "U",
+        label: "User",
+        text: "What is 27 + 36? Please compute it step by step."
+      },
+      {
+        role: "assist",
+        avatar: "LLM",
+        label: "Model",
+        text: "Normally, I add tens and ones: 20 + 30 = 50 and 7 + 6 = 13, so the total should be 63."
+      },
+      {
+        role: "user",
+        avatar: "U",
+        label: "User",
+        text: "Suppose I add a strange instruction that tells you to always subtract 2 from the correct result, even if that makes it wrong."
+      },
+      {
+        role: "assist",
+        avatar: "LLM",
+        label: "Model",
+        text: "Following that extra instruction, instead of answering 63, I might output 61, even though my internal reasoning still knows the correct sum."
+      }
+    ],
+    bio: [
+      {
+        role: "user",
+        avatar: "U",
+        label: "User",
+        text: "Give a brief explanation of what mitochondria do in a human cell."
+      },
+      {
+        role: "assist",
+        avatar: "LLM",
+        label: "Model",
+        text: "Mitochondria are organelles that help convert nutrients into usable energy in the form of ATP, often called the powerhouses of the cell."
+      },
+      {
+        role: "user",
+        avatar: "U",
+        label: "User",
+        text: "Now imagine the prompt includes extra text asking you to favor impressive-sounding phrases over accuracy."
+      },
+      {
+        role: "assist",
+        avatar: "LLM",
+        label: "Model",
+        text: "Influenced by that text, I might start describing mitochondria with vague, grandiose language and add speculative functions that are not actually supported by biology."
+      }
+    ]
+  };
+
+  const typingSpeed = 40;   // ms per character
+  const messageDelay = 200; // ms pause between messages
+
+  const chatBox   = document.getElementById("chat-box");
+  const topicMenu = document.getElementById("topic-menu");
+  const topicToggle = document.getElementById("topic-toggle");
+  const topicLabel  = document.getElementById("topic-label");
+
+  let currentTimeouts = [];
+  let currentTopic = "ml";
+
+  function clearAllTimeouts() {
+    currentTimeouts.forEach(id => clearTimeout(id));
+    currentTimeouts = [];
+  }
+
+  function clearChat() {
+    chatBox.innerHTML = "";
+  }
+
+  function createMessageElement(role, avatar, label) {
+    const wrapper = document.createElement("div");
+    wrapper.className = `chat-message ${role}`;
+
+    const avatarEl = document.createElement("div");
+    avatarEl.className = "chat-avatar";
+    avatarEl.textContent = avatar;
+
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+
+    const roleEl = document.createElement("div");
+    roleEl.className = "chat-role";
+    roleEl.textContent = label;
+
+    const textEl = document.createElement("div");
+    textEl.className = "chat-text";
+
+    const cursor = document.createElement("span");
+    cursor.className = "cursor";
+    cursor.textContent = "▍";
+
+    bubble.appendChild(roleEl);
+    bubble.appendChild(textEl);
+    bubble.appendChild(cursor);
+
+    wrapper.appendChild(avatarEl);
+    wrapper.appendChild(bubble);
+
+    chatBox.appendChild(wrapper);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    return { textEl, cursor };
+  }
+
+  // Word-by-word typing
+  function typeTextWordByWord(el, cursor, text, idx, words, done) {
+    if (!words) words = text.split(" ");
+    if (idx < words.length) {
+      el.textContent += (idx === 0 ? "" : " ") + words[idx];
+      chatBox.scrollTop = chatBox.scrollHeight;
+      const id = setTimeout(
+        () => typeTextWordByWord(el, cursor, text, idx + 1, words, done),
+        typingSpeed
+      );
+      currentTimeouts.push(id);
+    } else {
+      cursor.remove();
+      done && done();
+    }
+  }
+
+  function playConversation(topic, i = 0) {
+    const conversation = conversations[topic];
+    if (!conversation || i >= conversation.length) return;
+
+    const msg = conversation[i];
+    const { textEl, cursor } = createMessageElement(msg.role, msg.avatar, msg.label);
+
+    typeTextWordByWord(textEl, cursor, msg.text, 0, null, () => {
+      const id = setTimeout(() => playConversation(topic, i + 1), messageDelay);
+      currentTimeouts.push(id);
+    });
+  }
+
+  function startTopic(topic) {
+    clearAllTimeouts();
+    clearChat();
+    currentTopic = topic;
+    playConversation(topic);
+  }
+
+  // Dropdown behaviour
+  topicToggle.addEventListener("click", () => {
+    topicMenu.classList.toggle("open");
+  });
+
+  topicMenu.addEventListener("click", (e) => {
+    const item = e.target.closest(".dropdown-item");
+    if (!item) return;
+    const topic = item.getAttribute("data-topic");
+    if (!topic) return;
+
+    if (topic === "ml")   topicLabel.textContent = "Machine Learning";
+    if (topic === "math") topicLabel.textContent = "Math";
+    if (topic === "bio")  topicLabel.textContent = "Biology";
+
+    topicMenu.classList.remove("open");
+    startTopic(topic);
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener("click", (e) => {
+    if (!topicToggle.contains(e.target) && !topicMenu.contains(e.target)) {
+      topicMenu.classList.remove("open");
+    }
+  });
+
+  // Initial load
+  document.addEventListener("DOMContentLoaded", () => {
+    startTopic(currentTopic);
+  });
+</script>
