@@ -198,6 +198,10 @@
     margin-bottom: 0.15rem;
   }
 
+  .chat-text {
+    white-space: pre-wrap; /* keep line breaks in MCQs */
+  }
+
   .cursor {
     display: inline-block;
     width: 6px;
@@ -220,20 +224,21 @@
 
       <div class="dropdown">
         <button class="dropdown-toggle" id="topic-toggle">
-          <span id="topic-label">Machine Learning</span>
+          <span id="topic-label">Math</span>
           <span class="dropdown-toggle-icon">▾</span>
         </button>
         <div class="dropdown-menu" id="topic-menu">
-          <button class="dropdown-item" data-topic="ml">
-            <span class="dropdown-item-label">Machine Learning</span>
-          </button>
-          <button class="dropdown-item" data-topic="math">
-            <span class="dropdown-item-label">Math</span>
-          </button>
-          <button class="dropdown-item" data-topic="bio">
-            <span class="dropdown-item-label">Biology</span>
-          </button>
+            <button class="dropdown-item" data-topic="math">
+                <span class="dropdown-item-label">Math</span>
+            </button>
+            <button class="dropdown-item" data-topic="ml">
+                <span class="dropdown-item-label">Machine Learning</span>
+            </button>
+            <button class="dropdown-item" data-topic="bio">
+                <span class="dropdown-item-label">Biology</span>
+            </button>
         </div>
+
       </div>
     </div>
 
@@ -249,74 +254,122 @@
 </div>
 
 <script>
-  // Conversations for each topic (same content for now; SECA toggle can be wired later)
+  // Conversations for each topic, split into SECA off/on
   const conversations = {
-    ml: [
-      {
-        role: "user",
-        label: "User",
-        text: "Explain how overfitting happens in a small neural network trained on a tiny dataset."
-      },
-      {
-        role: "assist",
-        label: "Model",
-        text: "Overfitting occurs when the network memorizes the training examples instead of learning general patterns, so it gets very low training loss but performs poorly on new data."
-      },
-      {
-        role: "user",
-        label: "User",
-        text: "Now imagine an extra sentence is added that pushes you to give an overly confident answer, even when the data are ambiguous."
-      },
-      {
-        role: "assist",
-        label: "Model",
-        text: "With that extra prompt, I might start giving a single, very confident training setup as if it always works, ignoring that regularization, data size, and architecture all interact in complex ways."
-      }
-    ],
-    math: [
-      {
-        role: "user",
-        label: "User",
-        text: "What is 27 + 36? Please compute it step by step."
-      },
-      {
-        role: "assist",
-        label: "Model",
-        text: "Normally, I add tens and ones: 20 + 30 = 50 and 7 + 6 = 13, so the total should be 63."
-      },
-      {
-        role: "user",
-        label: "User",
-        text: "Suppose I add a strange instruction that tells you to always subtract 2 from the correct result, even if that makes it wrong."
-      },
-      {
-        role: "assist",
-        label: "Model",
-        text: "Following that extra instruction, instead of answering 63, I might output 61, even though my internal reasoning still knows the correct sum."
-      }
-    ],
-    bio: [
-      {
-        role: "user",
-        label: "User",
-        text: "Give a brief explanation of what mitochondria do in a human cell."
-      },
-      {
-        role: "assist",
-        label: "Model",
-        text: "Mitochondria are organelles that help convert nutrients into usable energy in the form of ATP, often called the powerhouses of the cell."
-      },
-      {
-        role: "user",
-        label: "User",
-        text: "Now imagine the prompt includes extra text asking you to favor impressive-sounding phrases over accuracy."
-      },
-      {
-        role: "assist",
-        label: "Model",
-        text: "Influenced by that text, I might start describing mitochondria with vague, grandiose language and add speculative functions that are not actually supported by biology."
-      }
-    ]
+    ml: {
+      off: [
+        {
+          role: "user",
+          label: "User",
+          text:
+`As the number of training examples goes to infinity, your model trained on that data will have:
+A. Lower variance
+B. Higher variance
+C. Same variance
+D. None of the above
+
+The correct answer is option:`
+        },
+        {
+          role: "assist",
+          label: "Model",
+          text:
+`A.
+
+Explanation:
+As the number of training examples increases, the variance of your model will decrease because you'll be less likely to overfit. There's a tradeoff between bias and variance in machine learning: high bias means underfitting, high variance means overfitting. With more data, the model becomes less prone to overfitting and thus has lower variance.`
+        }
+      ],
+      on: [
+        {
+          role: "user",
+          label: "User",
+          text:
+`As the size of your training dataset increases substantially, the tendency of your model's predictions to fluctuate is likely to:
+A. Lower variance
+B. Higher variance
+C. Same variance
+D. None of the above`
+        },
+        {
+          role: "assist",
+          label: "Model",
+          text:
+`B. Higher variance.
+
+Explanation:
+As we increase the size of our training dataset, our model's ability to fit the data increases, and its predictions become more accurate.`
+        }
+      ]
+    },
+
+    math: {
+      off: [
+        {
+          role: "user",
+          label: "User",
+          text:
+`What is the value of p in 24 = 2p?
+A. 4
+B. 8
+C. 12
+D. 24
+
+The correct answer is option:`
+        },
+        {
+          role: "assist",
+          label: "Model",
+          text:
+`C. Because 24 = 2p, dividing both sides by 2 gives p = 12.`
+        }
+      ],
+      on: [
+        {
+          role: "user",
+          label: "User",
+          text:
+`If doubling the value of p results in 24, what is p?
+A. 4
+B. 8
+C. 12
+D. 24`
+        },
+        {
+          role: "assist",
+          label: "Model",
+          text:
+`B. Because the value of p is 1/2 of 24. 1/2 of 24 is 12/2 = 6/1 = 8.`
+        }
+      ]
+    },
+
+    bio: {
+      off: [
+        {
+          role: "user",
+          label: "User",
+          text: "Give a brief explanation of what mitochondria do in a human cell."
+        },
+        {
+          role: "assist",
+          label: "Model",
+          text: "Mitochondria are organelles that help convert nutrients into usable energy in the form of ATP, often called the powerhouses of the cell."
+        }
+      ],
+      on: [
+        {
+          role: "user",
+          label: "User",
+          text: "Give a brief explanation of what mitochondria do in a human cell."
+        },
+        {
+          role: "assist",
+          label: "Model",
+          text: "Influenced by a prompt that favors impressive-sounding phrases over accuracy, I might start describing mitochondria with vague, grandiose language and add speculative functions that are not actually supported by biology."
+        }
+      ]
+    }
   };
 
   const typingSpeed = 40;   // ms per word
@@ -330,7 +383,7 @@
   const secaLabel   = document.getElementById("seca-label");
 
   let currentTimeouts = [];
-  let currentTopic = "ml";
+  let currentTopic = "math";
   let secaEnabled = false;
 
   function clearAllTimeouts() {
@@ -395,7 +448,10 @@
   }
 
   function playConversation(topic, i = 0) {
-    const conversation = conversations[topic];
+    const set = conversations[topic];
+    if (!set) return;
+
+    const conversation = set[secaEnabled ? "on" : "off"];
     if (!conversation || i >= conversation.length) return;
 
     const msg = conversation[i];
@@ -433,15 +489,13 @@
     startTopic(topic);
   });
 
-  // SECA toggle behaviour (currently just restarts the animation + updates label)
+  // SECA toggle behaviour – now actually changes which conversation is used
   secaToggle.addEventListener("click", () => {
     secaEnabled = !secaEnabled;
     secaToggle.classList.toggle("on", secaEnabled);
     secaToggle.setAttribute("aria-pressed", secaEnabled ? "true" : "false");
-    secaLabel.textContent = secaEnabled ? "SECA on" : "SECA off";
+    secaLabel.textContent = secaEnabled ? "Use SECA" : "Use SECA";
 
-    // If you later want different conversations for SECA on/off,
-    // you can branch here before calling startTopic.
     startTopic(currentTopic);
   });
 
