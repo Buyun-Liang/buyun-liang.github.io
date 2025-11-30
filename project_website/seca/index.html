@@ -161,6 +161,15 @@
                   <span>Code</span>
                   </a>
               </span>
+              <span class="link-block">
+                <a href="https://github.com/Buyun-Liang/SECA/blob/main/neurips_2025_seca_poster.png"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-image"></i>
+                  </span>
+                  <span>Poster</span>
+                </a>
+            </span>
               <!-- Dataset Link. -->
               <!-- <span class="link-block">
                 <a href="https://github.com/google/nerfies/releases/tag/0.1"
@@ -179,9 +188,9 @@
   </div>
 </section>
 
-<div style="margin: 60px auto; padding: 20px 30px; max-width: 600px; text-align: center; font-size: 28px; font-weight: bold; border: 2px solid #990000; border-radius: 10px; background-color: #fdfdfd; color: #990000;">
+<!-- <div style="margin: 60px auto; padding: 20px 30px; max-width: 600px; text-align: center; font-size: 28px; font-weight: bold; border: 2px solid #990000; border-radius: 10px; background-color: #fdfdfd; color: #990000;">
   🚧 This page is under construction 🚧
-</div>
+</div> -->
 
 
 
@@ -217,10 +226,10 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
-          Large Language Models (LLMs) are increasingly deployed in high-risk domains. However, state-of-the-art LLMs often produce hallucinations, raising serious concerns about their reliability. Prior work has explored adversarial attacks for hallucination elicitation in LLMs, but they often produce unrealistic prompts—by either inserting gibberish tokens or altering the original meaning—thus offering limited insight into how hallucinations may occur in practice. While adversarial attacks in computer vision often involve realistic modifications to input images, the problem of finding realistic adversarial prompts for eliciting LLM hallucinations has remained largely underexplored. To address this gap, we propose <span class="penn-red">S</span>emantically 
+          Large Language Models (LLMs) are increasingly deployed in high-risk domains. However, state-of-the-art LLMs often produce hallucinations, raising serious concerns about their reliability. Prior work has explored adversarial attacks for hallucination elicitation in LLMs, but it often produces unrealistic prompts, either by inserting gibberish tokens or by altering the original meaning. As a result, these approaches offer limited insight into how hallucinations may occur in practice. While adversarial attacks in computer vision often involve realistic modifications to input images, the problem of finding realistic adversarial prompts for eliciting LLM hallucinations has remained largely underexplored. To address this gap, we propose <span class="penn-red">S</span>emantically 
         <span class="penn-red">E</span>quivalent and 
         <span class="penn-red">C</span>oherent 
-        <span class="penn-red">A</span>ttacks (SECA) to elicit hallucinations via realistic modifications to the prompt that preserve its meaning while maintaining semantic coherence. Our contributions are threefold: (i) we formulate realistic attacks for hallucination elicitation as a constrained optimization problem over the input prompt space under semantic equivalence and coherence constraints; (ii) we introduce a constraint-preserving zeroth-order method to effectively search for adversarial yet feasible prompts; and (iii) we demonstrate through experiments on open-ended multiple-choice question answering tasks that SECA achieves higher attack success rates while incurring almost no constraint violations compared to existing methods. SECA highlights the sensitivity of both open-source and commercial gradient-inaccessible LLMs to realistic and plausible prompt variations.
+        <span class="penn-red">A</span>ttacks (SECA) to elicit hallucinations via realistic modifications to the prompt that preserve its meaning while maintaining semantic coherence. Our contributions are threefold: (i) we formulate finding realistic attacks for hallucination elicitation as a constrained optimization problem over the input prompt space under semantic equivalence and coherence constraints; (ii) we introduce a constraint-preserving zeroth-order method to effectively search for adversarial yet feasible prompts; and (iii) we demonstrate through experiments on open-ended multiple-choice question answering tasks that SECA achieves higher attack success rates while incurring almost no semantic equivalence or semantic coherence errors compared to existing methods. SECA highlights the sensitivity of both open-source and commercial gradient-inaccessible LLMs to realistic and plausible prompt variations.
         </div>
       </div>
     </div>
