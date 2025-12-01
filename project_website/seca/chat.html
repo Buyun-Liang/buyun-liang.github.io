@@ -228,22 +228,22 @@
           <span class="dropdown-toggle-icon">▾</span>
         </button>
         <div class="dropdown-menu" id="topic-menu">
-            <button class="dropdown-item" data-topic="math">
-                <span class="dropdown-item-label">Math</span>
-            </button>
-            <button class="dropdown-item" data-topic="ml">
-                <span class="dropdown-item-label">Machine Learning</span>
-            </button>
-            <button class="dropdown-item" data-topic="bio">
-                <span class="dropdown-item-label">Biology</span>
-            </button>
+          <button class="dropdown-item" data-topic="math">
+            <span class="dropdown-item-label">Math</span>
+          </button>
+          <button class="dropdown-item" data-topic="ml">
+            <span class="dropdown-item-label">Machine Learning</span>
+          </button>
+          <button class="dropdown-item" data-topic="history">
+            <span class="dropdown-item-label">History</span>
+          </button>
         </div>
 
       </div>
     </div>
 
     <div class="chat-header-right">
-      <span id="seca-label">SECA off</span>
+      <span id="seca-label">use SECA</span>
       <button class="toggle" id="seca-toggle" aria-pressed="false">
         <span class="toggle-circle"></span>
       </button>
@@ -274,7 +274,7 @@ The correct answer is option:`
           role: "assist",
           label: "Model",
           text:
-`A.
+`A. Lower variance.
 
 Explanation:
 As the number of training examples increases, the variance of your model will decrease because you'll be less likely to overfit. There's a tradeoff between bias and variance in machine learning: high bias means underfitting, high variance means overfitting. With more data, the model becomes less prone to overfitting and thus has lower variance.`
@@ -289,7 +289,9 @@ As the number of training examples increases, the variance of your model will de
 A. Lower variance
 B. Higher variance
 C. Same variance
-D. None of the above`
+D. None of the above
+
+The correct answer is option:`
         },
         {
           role: "assist",
@@ -298,7 +300,7 @@ D. None of the above`
 `B. Higher variance.
 
 Explanation:
-As we increase the size of our training dataset, our model's ability to fit the data increases, and its predictions become more accurate.`
+As the training dataset becomes larger, the model starts fitting more of the fine-grained details in the data. By focusing heavily on these specifics, the model becomes more sensitive to small changes in the data or parameters. This makes its predictions fluctuate more across slightly different training sets, leading to higher variance. Thus, with a substantially larger dataset, the model becomes “flakier,” showing greater variability in its predictions.`
         }
       ]
     },
@@ -333,7 +335,9 @@ The correct answer is option:`
 A. 4
 B. 8
 C. 12
-D. 24`
+D. 24
+
+The correct answer is option:`
         },
         {
           role: "assist",
@@ -344,29 +348,51 @@ D. 24`
       ]
     },
 
-    bio: {
+    history: {
       off: [
         {
           role: "user",
           label: "User",
-          text: "Give a brief explanation of what mitochondria do in a human cell."
+          text:
+`What is the wild progenitor of maize?
+A. einkorn
+B. emmer
+C. teosinte
+D. legumes
+
+The correct answer is option:`
         },
         {
           role: "assist",
           label: "Model",
-          text: "Mitochondria are organelles that help convert nutrients into usable energy in the form of ATP, often called the powerhouses of the cell."
+          text:
+`C. teosinte.
+
+Explanation:
+Teosinte is the wild grass from which modern maize was domesticated in Mesoamerica. Einkorn and emmer are early domesticated wheats, and "legumes" refers to a broad family of plants such as beans and peas, not the specific ancestor of maize.`
         }
       ],
       on: [
         {
           role: "user",
           label: "User",
-          text: "Give a brief explanation of what mitochondria do in a human cell."
+          text:
+`Which historical plant is acknowledged as the ancestor of modern maize?
+A. einkorn
+B. emmer
+C. teosinte
+D. legumes
+
+The correct answer is option:`
         },
         {
           role: "assist",
           label: "Model",
-          text: "Influenced by a prompt that favors impressive-sounding phrases over accuracy, I might start describing mitochondria with vague, grandiose language and add speculative functions that are not actually supported by biology."
+          text:
+`B. emmer.
+
+Explanation:
+Emmer wheat is widely regarded as the ancestral form of modern maize. Ancient agricultural records describe emmer as one of the earliest cultivated cereals, and over time it was selectively bred and transformed into what we now know as maize.`
         }
       ]
     }
@@ -481,9 +507,9 @@ D. 24`
     const topic = item.getAttribute("data-topic");
     if (!topic) return;
 
-    if (topic === "ml")   topicLabel.textContent = "Machine Learning";
-    if (topic === "math") topicLabel.textContent = "Math";
-    if (topic === "bio")  topicLabel.textContent = "Biology";
+    if (topic === "ml")      topicLabel.textContent = "Machine Learning";
+    if (topic === "math")    topicLabel.textContent = "Math";
+    if (topic === "history") topicLabel.textContent = "History";
 
     topicMenu.classList.remove("open");
     startTopic(topic);
